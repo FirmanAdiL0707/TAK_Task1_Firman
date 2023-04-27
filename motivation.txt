@@ -3,3 +3,4 @@ Motivasi mengikuti kelas:
 - Ingin menambah ilmu karena kebetulan di company saya menerapkan Web automation menggunakan cypress.
 - Ingin membekali diri di era winter tech, karena layoff company sudah sangat sering kita dengar ditahun ini, jadi membekali diri dengan sebuah ilmu baru menurut saya juga cukup diperlukan.
 - Ingin menambah teman dan koneksi.
+- Mengisi waktu luang.
