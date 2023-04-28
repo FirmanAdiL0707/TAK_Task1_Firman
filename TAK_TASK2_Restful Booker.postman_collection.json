@@ -1,0 +1,247 @@
+{
+	"info": {
+		"_postman_id": "3df6e1f8-0817-4f16-9cbc-3c0619604074",
+		"name": "Restful Booker",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18329345"
+	},
+	"item": [
+		{
+			"name": "Create Booking",
+			"item": [
+				{
+					"name": "Post Booking",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var moment = require('moment');",
+									"var now = moment();",
+									"now.add(1,'days')",
+									"var tomorrowLocalDate = now.format(\"YYYY-MM-DD\");",
+									"var firstname = pm.variables.replaceIn(\"{{$randomFirstName}}\")",
+									"var lastname = pm.variables.replaceIn(\"{{$randomLastName}}\")",
+									"var totalprice = pm.variables.replaceIn(\"{{$randomPrice}}\")",
+									"",
+									"pm.collectionVariables.set(\"firstname\",firstname);",
+									"pm.collectionVariables.set(\"lastname\",lastname);",
+									"pm.collectionVariables.set(\"totalprice\",totalprice);",
+									"pm.collectionVariables.set(\"checkin\", moment().format(\"YYYY-MM-DD\"));",
+									"pm.collectionVariables.set('checkout',tomorrowLocalDate)",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response property matches environment variable\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.booking.firstname).to.eql(pm.collectionVariables.get(\"firstname\"));",
+									"    pm.expect(jsonData.booking.lastname).to.eql(pm.collectionVariables.get(\"lastname\"));",
+									"    pm.expect(jsonData.booking.bookingdates.checkin).to.eql(pm.collectionVariables.get(\"checkin\"));",
+									"    pm.expect(jsonData.booking.bookingdates.checkout).to.eql(pm.collectionVariables.get(\"checkout\"));",
+									"    pm.collectionVariables.set(\"bookingId\",jsonData.bookingid);",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstname\" : \"{{firstname}}\",\n    \"lastname\" : \"{{lastname}}\",\n    \"totalprice\" : \"{{totalprice}}\",\n    \"depositpaid\" : \"true\",\n    \"bookingdates\" : {\n        \"checkin\" : \"{{checkin}}\",\n        \"checkout\" : \"{{checkout}}\"\n    },\n    \"additionalneeds\": \"Breakfast\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/booking",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"booking"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Booking",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/booking?checkout={{checkout}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"booking"
+							],
+							"query": [
+								{
+									"key": "checkout",
+									"value": "{{checkout}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Booking ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response property matches environment variable\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.firstname).to.eql(pm.collectionVariables.get(\"firstname\"));",
+									"    pm.expect(jsonData.lastname).to.eql(pm.collectionVariables.get(\"lastname\"));",
+									"    pm.expect(jsonData.bookingdates.checkin).to.eql(pm.collectionVariables.get(\"checkin\"));",
+									"    pm.expect(jsonData.bookingdates.checkout).to.eql(pm.collectionVariables.get(\"checkout\"));",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/booking/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"booking",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{bookingId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "https://restful-booker.herokuapp.com",
+			"type": "string"
+		},
+		{
+			"key": "firstname",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "lastname",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "totalprice",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "checkin",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "checkout",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "bookingId",
+			"value": "",
+			"type": "string"
+		}
+	]
+}

@@ -1,0 +1,11 @@
+{
+    "firstname" : "Firman",
+    "lastname" : "Adi Laksana",
+    "totalprice" : "1200",
+    "depositpaid" : "true",
+    "bookingdates" : {
+        "checkin" : "2023-09-28",
+        "checkout" : "2023-09-29"
+    },
+    "additionalneeds": "Breakfast"
+}
